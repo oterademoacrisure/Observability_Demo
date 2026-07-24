@@ -1,4 +1,6 @@
-# K8s Kind Voting App
+# Real‑Time Metrics
+
+
 
 A comprehensive guide for setting up a Kubernetes cluster using Kind.
 

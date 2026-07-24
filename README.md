@@ -9,9 +9,8 @@ This guide covers the steps to:
 - Install Docker and Kind.
 - Create a Kubernetes cluster using Kind.
 - Install and access kubectl.
-- Set up the Kubernetes Dashboard.
-- Install and configure Argo CD.
-- Connect and manage your Kubernetes cluster with Argo CD.
+- Set up the Kubernetes Dashboard..
+- Connect and manage your Kubernetes cluster
 
 
 ## Architecture
@@ -35,23 +34,21 @@ This guide covers the steps to:
 
 ### Project Title: 
 
-Automated Deployment of Scalable Applications on AWS EC2 with Kubernetes and Argo CD
+Automated Deployment of Scalable Applications on Machine with Kubernetes 
 
 ### Description: 
 
-Led the deployment of scalable applications on AWS EC2 using Kubernetes and Argo CD for streamlined management and continuous integration. Orchestrated deployments via Kubernetes dashboard, ensuring efficient resource utilization and seamless scaling.
+Led the deployment of scalable applications on Machine using Kubernetes for streamlined management and continuous integration. Orchestrated deployments via Kubernetes dashboard, ensuring efficient resource utilization and seamless scaling.
 
 ### Key Technologies:
 
-* AWS EC2: Infrastructure hosting for Kubernetes clusters.
+* Machine: Infrastructure hosting for Kubernetes clusters.
 * Kubernetes Dashboard: User-friendly interface for managing containerized applications.
-* Argo CD: Continuous Delivery tool for automated application deployments.
 
 ### Achievements:
 
-Implemented Kubernetes dashboard for visual management of containerized applications on AWS EC2 instances.
-Utilized Argo CD for automated deployment pipelines, enhancing deployment efficiency by 60%.
+Implemented Kubernetes dashboard for visual management of containerized applications on Machine instances.
 Achieved seamless scaling and high availability, supporting 99.9% uptime for critical applications.
-This project description emphasizes your role in leveraging AWS EC2, Kubernetes, and Argo CD to optimize application deployment and management processes effectively.
+
 
 

@@ -14,9 +14,27 @@ This guide covers the steps to:
 - Set up the Kubernetes Dashboard..
 - Connect and manage your Kubernetes cluster
 
+Step-by-Step Flow (Application real-time observability stack)
+Docker
+Package applications into containers.
+Each service (e.g., Prometheus, Grafana) runs as a container.
+Kubernetes
+Orchestrates containers across nodes.
+Ensures scaling, self-healing, and service discovery.
+Helm Charts
+Simplifies deployment of complex apps (Prometheus + Grafana).
+Provides versioned, reusable templates for Kubernetes manifests.
+Prometheus
+Collects metrics from Kubernetes pods and nodes.
+Stores time-series data (CPU, memory, network, custom app metrics).
+Grafana
+Connects to Prometheus as a data source.
+Visualizes metrics in real-time dashboards.
+Alerts can be configured for anomalies.  
 
 ## Architecture
 
+<img width="800" height="533" alt="image" src="https://github.com/user-attachments/assets/08a94108-f5da-43ac-b296-070d687ec9b9" />
 
 
 ## Observability

@@ -1,10 +1,10 @@
-# 🚀 Real‑Time Metrics — Observability Demo Voting App on Kind
+# Real‑Time Metrics — Observability Demo Voting App on Kind
 
 A comprehensive guide for setting up a **Kubernetes cluster using Kind** on Windows (or AWS EC2), deploying a **containerized voting application**, and integrating **Prometheus + Grafana** for observability.
 
 ---
 
-## 📘 Overview
+## Overview
 
 This guide covers:
 - Launch on Local machine / AWS EC2 instance.

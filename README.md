@@ -166,3 +166,74 @@ A .NET worker (/worker/) which consumes votes and stores them in…
 A Postgres database backed by a Docker volume
 
 A Node.js web app (/result) which shows the results of the voting in real time
+
+
+After configuration How to start:
+how to start and access the applications after configuration. It matches exactly the flow you followed — build, load, deploy, and then port‑forward to localhost.
+
+markdown
+# ▶️ Starting the Applications After Configuration
+
+Once Docker, Kind, Kubernetes, Prometheus, and Grafana are installed and configured, follow these steps to start and access the applications locally.
+
+---
+
+## 1️⃣ Build Application Images
+From the project root:
+```powershell
+docker build -t vote ./vote
+docker build -t result ./result
+docker build -t worker ./worker
+2️⃣ Load Images into Kind
+powershell
+kind load docker-image vote:latest --name demo
+kind load docker-image result:latest --name demo
+kind load docker-image worker:latest --name demo
+3️⃣ Deploy Kubernetes Manifests
+powershell
+kubectl apply -f k8s-specifications/
+kubectl get pods
+kubectl get svc
+Confirm pods are running:
+
+vote
+
+result
+
+worker
+
+redis
+
+db
+
+4️⃣ Access Applications (Port‑Forward)
+Since NodePort is not directly accessible in Kind, use port‑forwarding:
+
+Vote App
+
+powershell
+kubectl port-forward service/vote 5000:5000
+Access → http://localhost:5000
+
+Result App
+
+powershell
+kubectl port-forward service/result 5001:5001
+Access → http://localhost:5001
+
+5️⃣ Access Observability Tools
+Grafana
+
+powershell
+kubectl port-forward service/kube-prometheus-grafana 3000:80
+Access → http://localhost:3000
+Login: admin / password from secret:
+
+powershell
+kubectl get secret kube-prometheus-grafana -o jsonpath="{.data.admin-password}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+Prometheus
+
+powershell
+kubectl port-forward service/kube-prometheus-kube-prome-prometheus 9090:9090
+Access → http://localhost:9090
+

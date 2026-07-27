@@ -1,6 +1,3 @@
-You can copy‑paste this directly into your GitHub repo:
-
-markdown
 # 🚀 Real‑Time Metrics — Observability Demo Voting App on Kind
 
 A comprehensive guide for setting up a **Kubernetes cluster using Kind** on Windows (or AWS EC2), deploying a **containerized voting application**, and integrating **Prometheus + Grafana** for observability.
@@ -25,11 +22,11 @@ This guide covers:
 
 ## 🔄 Step‑by‑Step Flow (Application Real‑Time Observability Stack)
 
-- **[Docker](ca://s?q=Explain_Docker)** → Package applications into containers. Each service (Prometheus, Grafana, etc.) runs as a container.  
-- **[Kubernetes](ca://s?q=Explain_Kubernetes)** → Orchestrates containers across nodes. Ensures scaling, self‑healing, and service discovery.  
-- **[Helm Charts](ca://s?q=Explain_Helm_Charts)** → Simplifies deployment of complex apps (Prometheus + Grafana). Provides reusable templates.  
-- **[Prometheus](ca://s?q=Explain_Prometheus)** → Collects metrics from Kubernetes pods/nodes. Stores time‑series data (CPU, memory, network, custom app metrics).  
-- **[Grafana](ca://s?q=Explain_Grafana)** → Connects to Prometheus as a data source. Visualizes metrics in real‑time dashboards. Alerts can be configured for anomalies.  
+- **Docker** → Package applications into containers. Each service (Prometheus, Grafana, etc.) runs as a container.  
+- **Kubernetes** → Orchestrates containers across nodes. Ensures scaling, self‑healing, and service discovery.  
+- **Helm Charts** → Simplifies deployment of complex apps (Prometheus + Grafana). Provides reusable templates.  
+- **Prometheus** → Collects metrics from Kubernetes pods/nodes. Stores time‑series data (CPU, memory, network, custom app metrics).  
+- **Grafana** → Connects to Prometheus as a data source. Visualizes metrics in real‑time dashboards. Alerts can be configured for anomalies.  
 
 ---
 
@@ -158,4 +155,14 @@ Run benchmark:
 powershell
 ab -n 1000 -c 50 http://localhost:5000/
 📊 Observability
+<img width="953" height="475" alt="image" src="https://github.com/user-attachments/assets/302458f6-bf39-4ce7-a031-8aeceb1218b7" />
 
+A front‑end web app in Python (/vote) which lets you vote between two options
+
+A Redis which collects new votes
+
+A .NET worker (/worker/) which consumes votes and stores them in…
+
+A Postgres database backed by a Docker volume
+
+A Node.js web app (/result) which shows the results of the voting in real time

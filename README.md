@@ -36,6 +36,7 @@ This guide covers:
 
 <img width="950" height="456" alt="image" src="https://github.com/user-attachments/assets/aef6a5f3-7262-4d06-9108-57f4df25e345" />
 
+Query for testing: sum(rate(container_network_receive_bytes_total{namespace="default"}[2m])) by (pod)
 
 Prometheous Dashboard
 <img width="943" height="475" alt="image" src="https://github.com/user-attachments/assets/13456ff8-e4e1-4300-bd42-4892404c0873" />

@@ -34,6 +34,15 @@ This guide covers:
 
 <img width="800" height="533" alt="image" src="https://github.com/user-attachments/assets/08a94108-f5da-43ac-b296-070d687ec9b9" />
 
+<img width="950" height="456" alt="image" src="https://github.com/user-attachments/assets/aef6a5f3-7262-4d06-9108-57f4df25e345" />
+
+
+Prometheous Dashboard
+<img width="943" height="475" alt="image" src="https://github.com/user-attachments/assets/13456ff8-e4e1-4300-bd42-4892404c0873" />
+
+Grafana Dashboard
+<img width="951" height="476" alt="image" src="https://github.com/user-attachments/assets/e8898876-ca65-445b-a6c5-80f4459c453c" />
+
 ---
 
 ## ⚙️ Step‑by‑Step Setup
@@ -238,13 +247,5 @@ kubectl port-forward service/kube-prometheus-kube-prome-prometheus 9090:9090
 Access → http://localhost:9090
 
 
-<img width="950" height="456" alt="image" src="https://github.com/user-attachments/assets/aef6a5f3-7262-4d06-9108-57f4df25e345" />
-
-
-Prometheous Dashboard
-<img width="943" height="475" alt="image" src="https://github.com/user-attachments/assets/13456ff8-e4e1-4300-bd42-4892404c0873" />
-
-Grafana Dashboard
-<img width="951" height="476" alt="image" src="https://github.com/user-attachments/assets/e8898876-ca65-445b-a6c5-80f4459c453c" />
 
 

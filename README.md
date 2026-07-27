@@ -158,16 +158,4 @@ Run benchmark:
 powershell
 ab -n 1000 -c 50 http://localhost:5000/
 📊 Observability
-<img width="953" height="475" alt="image" src="https://github.com/user-attachments/assets/302458f6-bf39-4ce7-a031-8aeceb1218b7" />
 
-[Looks like the result wasn't safe to show. Let's switch things up and try something else!]
-
-A front‑end web app in Python ( in Bing) which lets you vote between two options
-
-A Redis which collects new votes
-
-A .NET ( in Bing) worker which consumes votes and stores them in…
-
-A Postgres database backed by a Docker volume
-
-A Node.js ( in Bing) web app which shows the results of the voting in real time

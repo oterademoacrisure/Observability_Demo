@@ -40,6 +40,9 @@ This guide covers:
 
 Prometheous Dashboard
 <img width="956" height="457" alt="image" src="https://github.com/user-attachments/assets/0af3b903-de1c-4083-9b9e-8ba0b2bf32c1" />
+
+<img width="956" height="484" alt="image" src="https://github.com/user-attachments/assets/3c6089f0-d162-4105-83d3-5e85c7ac4647" />
+
 ===============================================
 increase load:
 apiVersion: v1

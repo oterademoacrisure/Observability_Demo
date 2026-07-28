@@ -39,8 +39,24 @@ This guide covers:
 ## Query for testing: sum(rate(container_network_receive_bytes_total{namespace="default"}[2m])) by (pod)
 
 Prometheous Dashboard
-<img width="943" height="475" alt="image" src="https://github.com/user-attachments/assets/13456ff8-e4e1-4300-bd42-4892404c0873" />
+<img width="956" height="457" alt="image" src="https://github.com/user-attachments/assets/0af3b903-de1c-4083-9b9e-8ba0b2bf32c1" />
 
+===============================================
+increase load:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loadtest
+spec:
+  containers:
+  - name: hey
+    image: williamyeh/hey
+    command: ["hey"]
+    args: ["-n", "10000", "-c", "100", "http://vote.default.svc.cluster.local:80"]
+  restartPolicy: Never
+
+kubectl apply -f loadtest.yaml
+===============================================
 Grafana Dashboard
 <img width="951" height="476" alt="image" src="https://github.com/user-attachments/assets/e8898876-ca65-445b-a6c5-80f4459c453c" />
 

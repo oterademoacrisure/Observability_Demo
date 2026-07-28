@@ -40,7 +40,6 @@ This guide covers:
 
 Prometheous Dashboard
 <img width="956" height="457" alt="image" src="https://github.com/user-attachments/assets/0af3b903-de1c-4083-9b9e-8ba0b2bf32c1" />
-
 ===============================================
 increase load:
 apiVersion: v1
@@ -57,6 +56,7 @@ spec:
 
 kubectl apply -f loadtest.yaml
 ===============================================
+
 Grafana Dashboard
 <img width="951" height="476" alt="image" src="https://github.com/user-attachments/assets/e8898876-ca65-445b-a6c5-80f4459c453c" />
 

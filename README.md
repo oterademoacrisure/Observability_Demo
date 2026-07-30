@@ -60,6 +60,15 @@ spec:
 kubectl apply -f loadtest.yaml
 ===============================================
 
+Flow:
+Docker → Kind cluster runs inside Docker (demo-control-plane container).
+
+Kubernetes →  the cluster is healthy (kubectl get nodes shows demo-control-plane).
+
+Helm chart →  installed kube-prometheus-stack into the monitoring namespace.
+
+Prometheus →  port‑forwarded svc/prometheus-kube-prometheus-prometheus to localhost:9090 and are now running queries successfully.
+
 Grafana Dashboard
 <img width="951" height="476" alt="image" src="https://github.com/user-attachments/assets/e8898876-ca65-445b-a6c5-80f4459c453c" />
 

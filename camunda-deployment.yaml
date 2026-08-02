@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: camunda
+  labels:
+    app: camunda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: camunda
+  template:
+    metadata:
+      labels:
+        app: camunda
+    spec:
+      containers:
+      - name: camunda
+        image: camunda/camunda-bpm-platform:7.19.0
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /camunda
+            port: 8080
+          initialDelaySeconds: 120
+          periodSeconds: 15
+        livenessProbe:
+          httpGet:
+            path: /camunda
+            port: 8080
+          initialDelaySeconds: 150
+          periodSeconds: 30
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: camunda
+  labels:
+    app: camunda
+spec:
+  selector:
+    app: camunda
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 31004
+  type: NodePort

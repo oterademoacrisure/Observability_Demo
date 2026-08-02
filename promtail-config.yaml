@@ -1,0 +1,32 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Scrape Kubernetes pod logs
+  - job_name: kubernetes-pods
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      # Attach the app label from pod metadata
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        target_label: app
+      # Attach namespace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      # Attach pod name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      # Attach container name
+      - source_labels: [__meta_kubernetes_container_name]
+        target_label: container
+      # Path to container logs
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: __path__
+        replacement: /var/log/containers/*$1*.log

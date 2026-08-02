@@ -16,8 +16,8 @@ namespace Worker
         {
             try
             {
-                var pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
-                var redisConn = OpenRedisConnection("redis");
+                var pgsql = OpenDbConnection(GetDatabaseConnectionString());
+                var redisConn = OpenRedisConnection(GetRedisHost());
                 var redis = redisConn.GetDatabase();
 
                 // Keep alive is not implemented in Npgsql yet. This workaround was recommended:
@@ -78,14 +78,14 @@ namespace Worker
                     connection.Open();
                     break;
                 }
-                catch (SocketException)
+                catch (SocketException ex)
                 {
-                    Console.Error.WriteLine("Waiting for db");
+                    Console.Error.WriteLine($"Waiting for db ({ex.Message})");
                     Thread.Sleep(1000);
                 }
-                catch (DbException)
+                catch (DbException ex)
                 {
-                    Console.Error.WriteLine("Waiting for db");
+                    Console.Error.WriteLine($"Waiting for db ({ex.Message})");
                     Thread.Sleep(1000);
                 }
             }
@@ -115,12 +115,33 @@ namespace Worker
                     Console.Error.WriteLine("Connecting to redis");
                     return ConnectionMultiplexer.Connect(ipAddress);
                 }
-                catch (RedisConnectionException)
+                catch (RedisConnectionException ex)
                 {
-                    Console.Error.WriteLine("Waiting for redis");
+                    Console.Error.WriteLine($"Waiting for redis ({ex.Message})");
                     Thread.Sleep(1000);
                 }
             }
+        }
+
+        private static string GetDatabaseConnectionString()
+        {
+            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            if (!string.IsNullOrEmpty(databaseUrl))
+            {
+                return databaseUrl;
+            }
+
+            var host = Environment.GetEnvironmentVariable("PGHOST") ?? "db";
+            var user = Environment.GetEnvironmentVariable("PGUSER") ?? "postgres";
+            var password = Environment.GetEnvironmentVariable("PGPASSWORD") ?? "postgres";
+            var database = Environment.GetEnvironmentVariable("PGDATABASE") ?? "postgres";
+
+            return $"Host={host};Username={user};Password={password};Database={database};Ssl Mode=Require;Trust Server Certificate=true";
+        }
+
+        private static string GetRedisHost()
+        {
+            return Environment.GetEnvironmentVariable("REDIS_HOST") ?? "redis";
         }
 
         private static string GetIp(string hostname)
@@ -131,24 +152,37 @@ namespace Worker
                 .ToString();
 
         private static void UpdateVote(NpgsqlConnection connection, string voterId, string vote)
-        {
-            var command = connection.CreateCommand();
-            try
             {
-                command.CommandText = "INSERT INTO votes (id, vote) VALUES (@id, @vote)";
-                command.Parameters.AddWithValue("@id", voterId);
-                command.Parameters.AddWithValue("@vote", vote);
-                command.ExecuteNonQuery();
+                using (var command = connection.CreateCommand())
+                {
+                    try
+                    {
+                        // Try to insert a new vote
+                        command.CommandText = @"
+                            INSERT INTO votes (voter_id, vote, created_at)
+                            VALUES (@voter_id, @vote, NOW())
+                        ";
+                        command.Parameters.AddWithValue("@voter_id", voterId);
+                        command.Parameters.AddWithValue("@vote", vote);
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (PostgresException ex) when (ex.SqlState == "23505") // unique violation
+                    {
+                        // If voter_id already exists, update their vote
+                        command.CommandText = @"
+                            UPDATE votes
+                            SET vote = @vote, created_at = NOW()
+                            WHERE voter_id = @voter_id
+                        ";
+                        command.Parameters.Clear();
+                        command.Parameters.AddWithValue("@voter_id", voterId);
+                        command.Parameters.AddWithValue("@vote", vote);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
             }
-            catch (DbException)
-            {
-                command.CommandText = "UPDATE votes SET vote = @vote WHERE id = @id";
-                command.ExecuteNonQuery();
-            }
-            finally
-            {
-                command.Dispose();
-            }
-        }
+
     }
 }

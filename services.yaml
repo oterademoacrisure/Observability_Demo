@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote
+  namespace: default
+spec:
+  selector:
+    app: vote
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: metrics
+    port: 5000
+    targetPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: result
+  namespace: default
+spec:
+  selector:
+    app: result
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: metrics
+    port: 9100
+    targetPort: 9100
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: worker
+  namespace: default
+spec:
+  selector:
+    app: worker
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: metrics
+    port: 8000
+    targetPort: 8000

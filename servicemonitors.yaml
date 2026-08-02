@@ -1,0 +1,64 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vote-monitor
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: vote
+  endpoints:
+  - port: http   # must match Service port name
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: result-monitor
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: result
+  endpoints:
+  - port: http
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: worker-monitor
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: worker
+  endpoints:
+  - port: http
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: redis-monitor
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  endpoints:
+  - port: redis   # must match Service port name
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: postgres-monitor
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  endpoints:
+  - port: postgres   # must match Service port name
+    path: /metrics

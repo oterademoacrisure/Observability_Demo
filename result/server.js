@@ -2,11 +2,17 @@ var express = require('express'),
     async = require('async'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
+    path = require('path'),
+    // load environment from .env when present
+    dotenv = require('dotenv'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server);
 
+dotenv.config();
+
 var port = process.env.PORT || 4000;
+var dbHost = process.env.DB_HOST || 'db';
 
 io.on('connection', function (socket) {
 
@@ -17,9 +23,18 @@ io.on('connection', function (socket) {
   });
 });
 
-var pool = new Pool({
-  connectionString: 'postgres://postgres:postgres@db/postgres'
-});
+// prefer a full DATABASE_URL (Neon) when provided; fall back to local dbHost
+var poolConfig = {};
+if (process.env.DATABASE_URL) {
+  poolConfig.connectionString = process.env.DATABASE_URL;
+  // allow self-signed / skip CA verification for quick testing against Neon
+  poolConfig.ssl = { rejectUnauthorized: false };
+} else {
+  poolConfig.connectionString = 'postgres://postgres:postgres@' + dbHost + '/postgres';
+  poolConfig.ssl = false;
+}
+
+var pool = new Pool(poolConfig);
 
 async.retry(
   {times: 1000, interval: 1000},
@@ -64,7 +79,7 @@ function collectVotesFromResult(result) {
 }
 
 app.use(cookieParser());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/views'));
 
 app.get('/', function (req, res) {

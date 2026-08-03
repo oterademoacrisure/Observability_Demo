@@ -1,12 +1,39 @@
-
+## "We are monitoring Camunda's resource consumption and performance metrics in Prometheus, while viewing application execution logs via kubectl logs"
 
 <img width="959" height="374" alt="image" src="https://github.com/user-attachments/assets/bd14d9b6-4e93-487d-8157-f4f10b6d4ee0" />
 
+
 Prometheous log:
+[2026-08-03 05:37:55 +0000] [13] [INFO] Worker exiting (pid: 13)
+[2026-08-03 05:37:56 +0000] [15] [INFO] Booting worker with pid: 15
+[2026-08-03 05:52:11,816] INFO in app: Received vote for a
+[2026-08-03 05:52:11 +0000] [15] [INFO] Received vote for a
+127.0.0.1 - - [03/Aug/2026:05:52:11 +0000] "POST / HTTP/1.1" 200 1697 "-" "python-requests/2.31.0"
+[2026-08-03 05:53:40,615] INFO in app: Received vote for a
+[2026-08-03 05:53:40 +0000] [11] [INFO] Received vote for a
+127.0.0.1 - - [03/Aug/2026:05:53:40 +0000] "POST / HTTP/1.1" 200 1697 "-" "python-requests/2.31.0"
+[2026-08-03 05:54:00,391] INFO in app: Received vote for a
+[2026-08-03 05:54:00 +0000] [15] [INFO] Received vote for a
+127.0.0.1 - - [03/Aug/2026:05:54:00 +0000] "POST / HTTP/1.1" 200 1697 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+127.0.0.1 - - [03/Aug/2026:05:54:00 +0000] "GET /static/stylesheets/style.css HTTP/1.1" 304 0 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+[2026-08-03 05:54:00,755] INFO in app: Received vote for b
+[2026-08-03 05:54:00 +0000] [14] [INFO] Received vote for b
+127.0.0.1 - - [03/Aug/2026:05:54:00 +0000] "POST / HTTP/1.1" 200 1697 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+127.0.0.1 - - [03/Aug/2026:05:54:00 +0000] "GET /static/stylesheets/style.css HTTP/1.1" 304 0 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+[2026-08-03 05:54:33,920] INFO in app: Received vote for a
+[2026-08-03 05:54:33 +0000] [12] [INFO] Received vote for a
+127.0.0.1 - - [03/Aug/2026:05:54:33 +0000] "POST / HTTP/1.1" 200 1697 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+127.0.0.1 - - [03/Aug/2026:05:54:33 +0000] "GET /static/stylesheets/style.css HTTP/1.1" 304 0 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+[2026-08-03 05:54:35,985] INFO in app: Received vote for b
+[2026-08-03 05:54:35 +0000] [15] [INFO] Received vote for b
+127.0.0.1 - - [03/Aug/2026:05:54:35 +0000] "POST / HTTP/1.1" 200 1697 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+127.0.0.1 - - [03/Aug/2026:05:54:36 +0000] "GET /static/stylesheets/style.css HTTP/1.1" 304 0 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+
+
 
 <img width="955" height="469" alt="image" src="https://github.com/user-attachments/assets/f7987129-7f73-40ec-b9ba-34a06ccc704f" />
 
-🛠️ Step-by-Step Deployment & Commands
+### 🛠️ Step-by-Step Deployment & Commands
 1. Port Forwarding (K8s to Local)
 Forward the Camunda Engine REST & Cockpit service port to 8081:
 

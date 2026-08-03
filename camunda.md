@@ -6,8 +6,7 @@ Application:
 
 <img width="946" height="275" alt="image" src="https://github.com/user-attachments/assets/638fc4e0-7970-43a3-afbb-f375dcd8e53c" />
 
-
-Prometheous log:
+ log:
 # Vote 1 (Option A)
 [2026-08-03 05:54:00,391] INFO in app: Received vote for a
 [2026-08-03 05:54:00 +0000] [15] [INFO] Received vote for a

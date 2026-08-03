@@ -1,3 +1,34 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant Browser as Web UI (:5000)
+    participant Flask as Flask App (K8s Pod)
+    participant Camunda as Camunda Engine (:8081)
+    participant Worker as Python External Worker
+    participant Storage as Redis / PostgreSQL
+
+    %% Path 1: Direct UI Vote
+    rect rgb(240, 248, 255)
+        Note over User, Storage: Path 1: Direct UI Vote Path
+        User->>Browser: Casts vote (clicks option)
+        Browser->>Flask: HTTP POST / (User-Agent: Mozilla/5.0...)
+        Flask->>Storage: Store vote directly
+        Flask-->>Browser: Return confirmation & update UI
+    end
+
+    %% Path 2: Camunda Orchestrated Vote
+    rect rgb(255, 245, 238)
+        Note over User, Storage: Path 2: Camunda BPMN Orchestration Path
+        Camunda->>Camunda: Workflow instance started via REST API
+        Worker->>Camunda: Polls external task topics (vote-processing)
+        Camunda-->>Worker: Lock and fetch task
+        Worker->>Flask: HTTP POST / with X-Source-Orchestrator: Camunda (User-Agent: python-requests)
+        Flask->>Storage: Store orchestrated vote
+        Flask-->>Worker: Return success
+        Worker->>Camunda: Complete external task
+    end
+
+    
 🛠️ Step-by-Step Deployment & Commands
 1. Port Forwarding (K8s to Local)
 Forward the Camunda Engine REST & Cockpit service port to 8081:

@@ -1,7 +1,10 @@
-🏗️ Architecture Overview
-The system implements a Dual-Path Execution Architecture allowing votes to enter the processing pipeline either directly through the user interface or via a Camunda BPMN workflow process.
+# `camunda_setup.md`
 
-Code snippet
+## 🏗️ Architecture Overview
+
+The system implements a **Dual-Path Execution Architecture** allowing votes to enter the processing pipeline either directly through the user interface or via a Camunda BPMN workflow process.
+
+```mermaid
 flowchart TD
     subgraph DUAL_PATH ["🏛️ DUAL-PATH ARCHITECTURE"]
         direction TB
@@ -32,34 +35,3 @@ flowchart TD
     style WORKER fill:#feebc8,stroke:#d69e2e,color:#744210,stroke-width:2px
     style APP fill:#e6fffa,stroke:#319795,color:#234e52,stroke-width:2px
     style DB fill:#edf2f7,stroke:#4a5568,color:#1a202c,stroke-width:2px
-🔄 Execution Sequence Diagram
-Code snippet
-sequenceDiagram
-    autonumber
-    actor User
-    participant Browser as Web UI (:5000)
-    participant Flask as Flask App (K8s Pod)
-    participant Camunda as Camunda Engine (:8081)
-    participant Worker as Python External Worker
-    participant Storage as Redis / PostgreSQL
-
-    %% Path 1: Direct UI Vote
-    rect rgb(240, 248, 255)
-        Note over User, Storage: Path 1: Direct UI Vote Path
-        User->>Browser: Casts vote (clicks option)
-        Browser->>Flask: HTTP POST / (User-Agent: Mozilla/5.0...)
-        Flask->>Storage: Store vote directly
-        Flask-->>Browser: Return confirmation & update UI
-    end
-
-    %% Path 2: Camunda Orchestrated Vote
-    rect rgb(255, 245, 238)
-        Note over User, Storage: Path 2: Camunda BPMN Orchestration Path
-        Camunda->>Camunda: Workflow instance started via REST API
-        Worker->>Camunda: Polls external task topics (vote-processing)
-        Camunda-->>Worker: Lock and fetch task
-        Worker->>Flask: HTTP POST / with X-Source-Orchestrator: Camunda (User-Agent: python-requests)
-        Flask->>Storage: Store orchestrated vote
-        Flask-->>Worker: Return success
-        Worker->>Camunda: Complete external task
-    end

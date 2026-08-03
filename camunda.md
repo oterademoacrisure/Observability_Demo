@@ -1,45 +1,3 @@
-# `camunda_setup.md`
-
-## 🏗️ Architecture Overview
-
-The system implements a **Dual-Path Execution Architecture** allowing votes to enter the processing pipeline either directly through the user interface or via a Camunda BPMN workflow process.
-
-```mermaid
-flowchart TD
-    subgraph DUAL_PATH ["🏛️ DUAL-PATH ARCHITECTURE"]
-        direction TB
-
-        subgraph PATH_DIRECT ["Path 1: Direct User Action"]
-            UI["🖥️ Web UI<br/><code>(:5000)</code>"]
-        end
-
-        subgraph PATH_CAMUNDA ["Path 2: Camunda BPMN Orchestration"]
-            ENGINE["⚡ Camunda Engine<br/><code>(:8081)</code>"]
-            WORKER["🐍 Python Task Worker"]
-        end
-
-        APP["🔥 Flask Vote App<br/><code>(Tagged: DIRECT UI)</code>"]
-        DB[("💾 Redis / PostgreSQL DB")]
-    end
-
-    UI -->|HTTP Direct POST| APP
-    ENGINE -->|REST Start / Poll| WORKER
-    WORKER -->|HTTP Orchestrated POST| APP
-    APP -->|Pushes Vote Data| DB
-
-    style DUAL_PATH fill:#fafafa,stroke:#333,stroke-width:2px
-    style PATH_DIRECT fill:#e6f3ff,stroke:#2b6cb0,stroke-width:1px
-    style PATH_CAMUNDA fill:#fff5eb,stroke:#c05621,stroke-width:1px
-    style UI fill:#ebf8ff,stroke:#3182ce,color:#2b6cb0,stroke-width:2px
-    style ENGINE fill:#fffaf0,stroke:#dd6b20,color:#c05621,stroke-width:2px
-    style WORKER fill:#feebc8,stroke:#d69e2e,color:#744210,stroke-width:2px
-    style APP fill:#e6fffa,stroke:#319795,color:#234e52,stroke-width:2px
-    style DB fill:#edf2f7,stroke:#4a5568,color:#1a202c,stroke-width:2px
-
-
-
-
-
 🛠️ Step-by-Step Deployment & Commands
 1. Port Forwarding (K8s to Local)
 Forward the Camunda Engine REST & Cockpit service port to 8081:
@@ -109,3 +67,42 @@ Plaintext
 [2026-08-03 05:54:00,755] INFO in app: Received vote for b
 [2026-08-03 05:54:00 +0000] [14] [INFO] Received vote for b
 127.0.0.1 - - [03/Aug/2026:05:54:00 +0000] "POST / HTTP/1.1" 200 1697 "http://localhost:5000/"
+
+
+# `camunda_setup.md`
+
+## 🏗️ Architecture Overview
+
+The system implements a **Dual-Path Execution Architecture** allowing votes to enter the processing pipeline either directly through the user interface or via a Camunda BPMN workflow process.
+
+```mermaid
+flowchart TD
+    subgraph DUAL_PATH ["🏛️ DUAL-PATH ARCHITECTURE"]
+        direction TB
+
+        subgraph PATH_DIRECT ["Path 1: Direct User Action"]
+            UI["🖥️ Web UI<br/><code>(:5000)</code>"]
+        end
+
+        subgraph PATH_CAMUNDA ["Path 2: Camunda BPMN Orchestration"]
+            ENGINE["⚡ Camunda Engine<br/><code>(:8081)</code>"]
+            WORKER["🐍 Python Task Worker"]
+        end
+
+        APP["🔥 Flask Vote App<br/><code>(Tagged: DIRECT UI)</code>"]
+        DB[("💾 Redis / PostgreSQL DB")]
+    end
+
+    UI -->|HTTP Direct POST| APP
+    ENGINE -->|REST Start / Poll| WORKER
+    WORKER -->|HTTP Orchestrated POST| APP
+    APP -->|Pushes Vote Data| DB
+
+    style DUAL_PATH fill:#fafafa,stroke:#333,stroke-width:2px
+    style PATH_DIRECT fill:#e6f3ff,stroke:#2b6cb0,stroke-width:1px
+    style PATH_CAMUNDA fill:#fff5eb,stroke:#c05621,stroke-width:1px
+    style UI fill:#ebf8ff,stroke:#3182ce,color:#2b6cb0,stroke-width:2px
+    style ENGINE fill:#fffaf0,stroke:#dd6b20,color:#c05621,stroke-width:2px
+    style WORKER fill:#feebc8,stroke:#d69e2e,color:#744210,stroke-width:2px
+    style APP fill:#e6fffa,stroke:#319795,color:#234e52,stroke-width:2px
+    style DB fill:#edf2f7,stroke:#4a5568,color:#1a202c,stroke-width:2px

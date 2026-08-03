@@ -1,5 +1,37 @@
 
 <img width="959" height="374" alt="image" src="https://github.com/user-attachments/assets/bd14d9b6-4e93-487d-8157-f4f10b6d4ee0" />
+🛠️ Step-by-Step Deployment & Commands
+1. Port Forwarding (K8s to Local)
+Forward the Camunda Engine REST & Cockpit service port to 8081:
+
+PowerShell
+kubectl port-forward svc/camunda 8081:8080
+2. Deploy the BPMN Process Diagram
+Deploy vote.bpmn from the project repository:
+
+PowerShell
+curl.exe -X POST "http://localhost:8081/engine-rest/deployment/create" `
+  -F "deployment-name=vote-deployment" `
+  -F "data=@.\worker-camunda\vote.bpmn"
+3. Start a Workflow Instance via REST
+Trigger the VoteProcess workflow instance with parameters:
+
+PowerShell
+$body = @{
+    variables = @{
+        vote = @{ value = "a"; type = "String" }
+    }
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8081/engine-rest/process-definition/key/VoteProcess/start" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body $body
+4. Run External Task Worker
+Execute the Python polling worker:
+
+PowerShell
+python worker-camunda/Camundaflow.py
 
 The system implements a **Dual-Path Execution Architecture** allowing votes to enter the processing pipeline either directly through the user interface or via a Camunda BPMN workflow process.
 

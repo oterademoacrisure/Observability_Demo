@@ -34,3 +34,7 @@ flowchart TD
     style WORKER fill:#feebc8,stroke:#d69e2e,color:#744210,stroke-width:2px
     style APP fill:#e6fffa,stroke:#319795,color:#234e52,stroke-width:2px
     style DB fill:#edf2f7,stroke:#4a5568,color:#1a202c,stroke-width:2px
+
+
+
+<img width="959" height="374" alt="image" src="https://github.com/user-attachments/assets/bd14d9b6-4e93-487d-8157-f4f10b6d4ee0" />

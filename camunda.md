@@ -35,3 +35,77 @@ flowchart TD
     style WORKER fill:#feebc8,stroke:#d69e2e,color:#744210,stroke-width:2px
     style APP fill:#e6fffa,stroke:#319795,color:#234e52,stroke-width:2px
     style DB fill:#edf2f7,stroke:#4a5568,color:#1a202c,stroke-width:2px
+
+
+
+
+
+🛠️ Step-by-Step Deployment & Commands
+1. Port Forwarding (K8s to Local)
+Forward the Camunda Engine REST & Cockpit service port to 8081:
+
+PowerShell
+kubectl port-forward svc/camunda 8081:8080
+2. Deploy the BPMN Process Diagram
+Deploy vote.bpmn from the project repository:
+
+PowerShell
+curl.exe -X POST "http://localhost:8081/engine-rest/deployment/create" `
+  -F "deployment-name=vote-deployment" `
+  -F "data=@.\worker-camunda\vote.bpmn"
+3. Start a Workflow Instance via REST
+Trigger the VoteProcess workflow instance with parameters:
+
+PowerShell
+$body = @{
+    variables = @{
+        vote = @{ value = "a"; type = "String" }
+    }
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8081/engine-rest/process-definition/key/VoteProcess/start" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body $body
+4. Run External Task Worker
+Execute the Python polling worker:
+
+PowerShell
+python worker-camunda/Camundaflow.py
+📊 Prometheus & Grafana Monitoring
+To track Camunda engine performance and CPU consumption, use the PromQL metric query:
+
+Code snippet
+rate(container_cpu_usage_seconds_total{pod=~"camunda-.*", container="camunda"}[2m])
+📑 Log Breakdown & Flow Verification
+Run the following command to observe incoming execution logs:
+
+PowerShell
+kubectl logs -f deployment/vote
+Log Output Analysis
+Plaintext
+# ----------------------------------------------------------------------
+# PATH 1: Camunda-Orchestrated Votes
+# Identified by User-Agent: "python-requests/2.31.0"
+# Triggered via REST process execution through External Worker
+# ----------------------------------------------------------------------
+[2026-08-03 05:52:11,816] INFO in app: Received vote for a
+[2026-08-03 05:52:11 +0000] [15] [INFO] Received vote for a
+127.0.0.1 - - [03/Aug/2026:05:52:11 +0000] "POST / HTTP/1.1" 200 1697 "-" "python-requests/2.31.0"
+
+[2026-08-03 05:53:40,615] INFO in app: Received vote for a
+[2026-08-03 05:53:40 +0000] [11] [INFO] Received vote for a
+127.0.0.1 - - [03/Aug/2026:05:53:40 +0000] "POST / HTTP/1.1" 200 1697 "-" "python-requests/2.31.0"
+
+# ----------------------------------------------------------------------
+# PATH 2: Direct UI Votes
+# Identified by User-Agent: "Mozilla/5.0... Chrome/..."
+# Triggered directly by end-users via Browser (http://localhost:5000)
+# ----------------------------------------------------------------------
+[2026-08-03 05:54:00,391] INFO in app: Received vote for a
+[2026-08-03 05:54:00 +0000] [15] [INFO] Received vote for a
+127.0.0.1 - - [03/Aug/2026:05:54:00 +0000] "POST / HTTP/1.1" 200 1697 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"
+
+[2026-08-03 05:54:00,755] INFO in app: Received vote for b
+[2026-08-03 05:54:00 +0000] [14] [INFO] Received vote for b
+127.0.0.1 - - [03/Aug/2026:05:54:00 +0000] "POST / HTTP/1.1" 200 1697 "http://localhost:5000/"

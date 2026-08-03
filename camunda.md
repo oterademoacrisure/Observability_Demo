@@ -1,6 +1,11 @@
 
 
 <img width="959" height="374" alt="image" src="https://github.com/user-attachments/assets/bd14d9b6-4e93-487d-8157-f4f10b6d4ee0" />
+
+Prometheous log:
+
+<img width="955" height="469" alt="image" src="https://github.com/user-attachments/assets/f7987129-7f73-40ec-b9ba-34a06ccc704f" />
+
 🛠️ Step-by-Step Deployment & Commands
 1. Port Forwarding (K8s to Local)
 Forward the Camunda Engine REST & Cockpit service port to 8081:

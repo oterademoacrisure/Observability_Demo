@@ -1,4 +1,4 @@
-## "We are monitoring Camunda's resource consumption and performance metrics in Prometheus, while viewing application execution logs via kubectl logs"
+## We are monitoring Camunda's resource consumption and performance metrics in Prometheus, while viewing application execution logs via kubectl logs
 
 <img width="959" height="374" alt="image" src="https://github.com/user-attachments/assets/bd14d9b6-4e93-487d-8157-f4f10b6d4ee0" />
 

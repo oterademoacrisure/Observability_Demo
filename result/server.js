@@ -3,11 +3,20 @@ var express = require('express'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
     path = require('path'),
+    client = require('prom-client'),
     // load environment from .env when present
     dotenv = require('dotenv'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server);
+
+client.collectDefaultMetrics();
+
+const requestCounter = new client.Counter({
+  name: 'result_http_requests_total',
+  help: 'Total request count for the result application',
+  labelNames: ['method', 'route']
+});
 
 dotenv.config();
 
@@ -83,7 +92,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/views'));
 
 app.get('/', function (req, res) {
+  requestCounter.labels(req.method, '/').inc();
   res.sendFile(path.resolve(__dirname + '/views/index.html'));
+});
+
+app.get('/metrics', async function (req, res) {
+  res.set('Content-Type', client.register.contentType);
+  res.end(await client.register.metrics());
 });
 
 server.listen(port, function () {
